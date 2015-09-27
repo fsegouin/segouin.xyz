@@ -1,0 +1,11 @@
+{
+  "name": "segouin-xyz",
+  "private": true,
+  "dependencies": {
+    "font-awesome": "fontawesome#~4.4.0"
+  },
+  "devDependencies": {
+    "chai": "~3.2.0",
+    "mocha": "~2.3.2"
+  }
+}
