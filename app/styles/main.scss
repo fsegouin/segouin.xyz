@@ -93,14 +93,32 @@ section#social {
       white-space: nowrap;
     }
 
+    .siberia {
+       position: relative;
+       top: 2px;
+
+       svg path {
+          fill: #93a1a1;
+       }
+    }
+
     a {
       margin: 0 5px;
       color: #93a1a1;
       transition: all .5s ease 0s;
 
+      svg path {
+        transition: fill .5s ease 0s;
+        fill: #93a1a1;
+      }
+
       &:hover {
         text-decoration: none;
         color: #444;
+
+        svg path {
+          fill: #444;
+        }
       }
     }
   }
