@@ -1,170 +1,173 @@
-// generated on 2015-09-10 using generator-gulp-webapp 1.0.3
+import fs from 'fs';
+import path from 'path';
+
 import gulp from 'gulp';
-import gulpLoadPlugins from 'gulp-load-plugins';
-import browserSync from 'browser-sync';
+
+// Load all gulp plugins automatically
+// and attach them to the `plugins` object
+import plugins from 'gulp-load-plugins';
+
+// Temporary solution until gulp 4
+// https://github.com/gulpjs/gulp/issues/355
+import runSequence from 'run-sequence';
+
+import archiver from 'archiver';
+import glob from 'glob';
 import del from 'del';
-import {stream as wiredep} from 'wiredep';
 
-const $ = gulpLoadPlugins();
-const reload = browserSync.reload;
+import pkg from './package.json';
 
-gulp.task('styles', () => {
-  return gulp.src('app/styles/*.scss')
-    .pipe($.plumber())
-    .pipe($.sourcemaps.init())
-    .pipe($.sass.sync({
-      outputStyle: 'expanded',
-      precision: 10,
-      includePaths: ['.']
-    }).on('error', $.sass.logError))
-    .pipe($.autoprefixer({browsers: ['last 1 version']}))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
-    .pipe(reload({stream: true}));
+const dirs = pkg['h5bp-configs'].directories;
+
+// ---------------------------------------------------------------------
+// | Helper tasks                                                      |
+// ---------------------------------------------------------------------
+
+gulp.task('archive:create_archive_dir', () => {
+    fs.mkdirSync(path.resolve(dirs.archive), '0755');
 });
 
-function lint(files, options) {
-  return () => {
-    return gulp.src(files)
-      .pipe(reload({stream: true, once: true}))
-      .pipe($.eslint(options))
-      .pipe($.eslint.format())
-      .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
-  };
-}
-const testLintOptions = {
-  env: {
-    mocha: true
-  }
-};
+gulp.task('archive:zip', (done) => {
 
-gulp.task('lint', lint('app/scripts/**/*.js'));
-gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
+    const archiveName = path.resolve(dirs.archive, `${pkg.name}_v${pkg.version}.zip`);
+    const zip = archiver('zip');
+    const files = glob.sync('**/*.*', {
+        'cwd': dirs.dist,
+        'dot': true // include hidden files
+    });
+    const output = fs.createWriteStream(archiveName);
 
-gulp.task('html', ['styles'], () => {
-  const assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
+    zip.on('error', (error) => {
+        done();
+        throw error;
+    });
 
-  return gulp.src('app/*.html')
-    .pipe(assets)
-    .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
-    .pipe(assets.restore())
-    .pipe($.useref())
-    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
-    .pipe(gulp.dest('dist'));
+    output.on('close', done);
+
+    files.forEach( (file) => {
+
+        const filePath = path.resolve(dirs.dist, file);
+
+        // `zip.bulk` does not maintain the file
+        // permissions, so we need to add files individually
+        zip.append(fs.createReadStream(filePath), {
+            'name': file,
+            'mode': fs.statSync(filePath).mode
+        });
+
+    });
+
+    zip.pipe(output);
+    zip.finalize();
+
 });
 
-gulp.task('images', () => {
-  return gulp.src('app/images/**/*')
-    .pipe($.if($.if.isFile, $.cache($.imagemin({
-      progressive: true,
-      interlaced: true,
-      // don't remove IDs from SVGs, they are often used
-      // as hooks for embedding and styling
-      svgoPlugins: [{cleanupIDs: false}]
-    }))
-    .on('error', function (err) {
-      console.log(err);
-      this.end();
-    })))
-    .pipe(gulp.dest('dist/images'));
+gulp.task('clean', (done) => {
+    del([
+        dirs.archive,
+        dirs.dist
+    ]).then( () => {
+        done();
+    });
 });
 
-gulp.task('fonts', () => {
-  return gulp.src(require('main-bower-files')({
-    filter: '**/*.{eot,svg,ttf,woff,woff2}'
-  }).concat('app/fonts/**/*'))
-    .pipe(gulp.dest('.tmp/fonts'))
-    .pipe(gulp.dest('dist/fonts'));
+gulp.task('copy', [
+    'copy:.htaccess',
+    'copy:index.html',
+    'copy:jquery',
+    'copy:license',
+    'copy:main.css',
+    'copy:misc',
+    'copy:normalize'
+]);
+
+gulp.task('copy:.htaccess', () =>
+    gulp.src('node_modules/apache-server-configs/dist/.htaccess')
+        .pipe(plugins().replace(/# ErrorDocument/g, 'ErrorDocument'))
+        .pipe(gulp.dest(dirs.dist))
+);
+
+gulp.task('copy:index.html', () =>
+    gulp.src(`${dirs.src}/index.html`)
+        .pipe(plugins().replace(/{{JQUERY_VERSION}}/g, pkg.devDependencies.jquery))
+        .pipe(gulp.dest(dirs.dist))
+);
+
+gulp.task('copy:jquery', () =>
+    gulp.src(['node_modules/jquery/dist/jquery.min.js'])
+        .pipe(plugins().rename(`jquery-${pkg.devDependencies.jquery}.min.js`))
+        .pipe(gulp.dest(`${dirs.dist}/js/vendor`))
+);
+
+gulp.task('copy:license', () =>
+    gulp.src('LICENSE.txt')
+        .pipe(gulp.dest(dirs.dist))
+);
+
+gulp.task('copy:main.css', () => {
+    var postcss    = require('gulp-postcss');
+    var sourcemaps = require('gulp-sourcemaps');
+
+    gulp.src(`${dirs.src}/css/main.css`)
+        .pipe(sourcemaps.init())
+        .pipe(postcss([ require('autoprefixer'), require('precss') ]))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(`${dirs.dist}/css`));
 });
 
-gulp.task('copyfonts', () => {
-  return gulp.src('./bower_components/font-awesome/fonts/**/*.{ttf,woff,woff2,eot,svg}')
-  .pipe(gulp.dest('.tmp/fonts'))
-  .pipe(gulp.dest('dist/fonts'));
+gulp.task('copy:misc', () =>
+    gulp.src([
+
+        // Copy all files
+        `${dirs.src}/**/*`,
+
+        // Exclude the following files
+        // (other tasks will handle the copying of these files)
+        `!${dirs.src}/css/main.css`,
+        `!${dirs.src}/index.html`
+
+    ], {
+
+        // Include hidden files by default
+        dot: true
+
+    }).pipe(gulp.dest(dirs.dist))
+);
+
+gulp.task('copy:normalize', () =>
+    gulp.src('node_modules/normalize.css/normalize.css')
+        .pipe(gulp.dest(`${dirs.dist}/css`))
+);
+
+gulp.task('lint:js', () =>
+    gulp.src([
+        'gulpfile.js',
+        `${dirs.src}/js/*.js`,
+        `${dirs.test}/*.js`
+    ]).pipe(plugins().jscs())
+      .pipe(plugins().jshint())
+      .pipe(plugins().jshint.reporter('jshint-stylish'))
+      .pipe(plugins().jshint.reporter('fail'))
+);
+
+
+// ---------------------------------------------------------------------
+// | Main tasks                                                        |
+// ---------------------------------------------------------------------
+
+gulp.task('archive', (done) => {
+    runSequence(
+        'build',
+        'archive:create_archive_dir',
+        'archive:zip',
+    done)
 });
 
-gulp.task('extras', () => {
-  return gulp.src([
-    'app/*.*',
-    '!app/*.html'
-  ], {
-    dot: true
-  }).pipe(gulp.dest('dist'));
+gulp.task('build', (done) => {
+    runSequence(
+        ['clean', 'lint:js'],
+        'copy',
+    done)
 });
 
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
-
-gulp.task('serve', ['styles', 'fonts', 'copyfonts'], () => {
-  browserSync({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: ['.tmp', 'app'],
-      routes: {
-        '/bower_components': 'bower_components'
-      }
-    }
-  });
-
-  gulp.watch([
-    'app/*.html',
-    'app/scripts/**/*.js',
-    'app/images/**/*',
-    '.tmp/fonts/**/*'
-  ]).on('change', reload);
-
-  gulp.watch('app/styles/**/*.scss', ['styles']);
-  gulp.watch('app/fonts/**/*', ['fonts']);
-  gulp.watch('bower.json', ['wiredep', 'fonts']);
-});
-
-gulp.task('serve:dist', () => {
-  browserSync({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: ['dist']
-    }
-  });
-});
-
-gulp.task('serve:test', () => {
-  browserSync({
-    notify: false,
-    port: 9000,
-    ui: false,
-    server: {
-      baseDir: 'test',
-      routes: {
-        '/bower_components': 'bower_components'
-      }
-    }
-  });
-
-  gulp.watch('test/spec/**/*.js').on('change', reload);
-  gulp.watch('test/spec/**/*.js', ['lint:test']);
-});
-
-// inject bower components
-gulp.task('wiredep', () => {
-  gulp.src('app/styles/*.scss')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)+/
-    }))
-    .pipe(gulp.dest('app/styles'));
-
-  gulp.src('app/*.html')
-    .pipe(wiredep({
-      ignorePath: /^(\.\.\/)*\.\./
-    }))
-    .pipe(gulp.dest('app'));
-});
-
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'copyfonts', 'extras'], () => {
-  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
-});
-
-gulp.task('default', ['clean'], () => {
-  gulp.start('build');
-});
+gulp.task('default', ['build']);
