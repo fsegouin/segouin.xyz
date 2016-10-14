@@ -72,35 +72,14 @@ gulp.task('clean', (done) => {
 });
 
 gulp.task('copy', [
-    'copy:.htaccess',
     'copy:index.html',
-    'copy:jquery',
-    'copy:license',
     'copy:main.css',
     'copy:misc',
     'copy:normalize'
 ]);
 
-gulp.task('copy:.htaccess', () =>
-    gulp.src('node_modules/apache-server-configs/dist/.htaccess')
-        .pipe(plugins().replace(/# ErrorDocument/g, 'ErrorDocument'))
-        .pipe(gulp.dest(dirs.dist))
-);
-
 gulp.task('copy:index.html', () =>
     gulp.src(`${dirs.src}/index.html`)
-        .pipe(plugins().replace(/{{JQUERY_VERSION}}/g, pkg.devDependencies.jquery))
-        .pipe(gulp.dest(dirs.dist))
-);
-
-gulp.task('copy:jquery', () =>
-    gulp.src(['node_modules/jquery/dist/jquery.min.js'])
-        .pipe(plugins().rename(`jquery-${pkg.devDependencies.jquery}.min.js`))
-        .pipe(gulp.dest(`${dirs.dist}/js/vendor`))
-);
-
-gulp.task('copy:license', () =>
-    gulp.src('LICENSE.txt')
         .pipe(gulp.dest(dirs.dist))
 );
 
