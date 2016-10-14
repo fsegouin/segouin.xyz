@@ -1,0 +1,260 @@
+/* Google Fonts */
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300|Montserrat);
+
+.text-center {
+  text-align: center;
+}
+
+body {
+  background: #ecf0f1;
+  font-size: 18px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: #839496;
+  margin: 0;
+}
+
+h1, h2 {
+  letter-spacing: -0.1em;
+  font-size: 1.3em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+a {
+  text-decoration:none;
+}
+
+header {
+  background: -webkit-linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('../img/header.jpg') no-repeat center fixed;
+  background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('../img/header.jpg') no-repeat center fixed;
+  background-size: cover;
+  color: white;
+  -webkit-animation: overlay 2s;
+          animation: overlay 2s;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+.browserupgrade {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+#me {
+  font-size: 1.4em;
+  // height: 50vh;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-animation: move 2s;
+          animation: move 2s;
+  -webkit-animation-delay: 13s;
+          animation-delay: 13s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+#me i.fa-envelope {
+  margin-right: 5px;
+}
+
+@media only screen and (min-width: 1024px) {
+
+  #me{
+    font-size: 2em;
+  }
+  }
+
+section#social {
+  margin-top: 5vh;
+}
+
+section#social #social-header {
+  font-size: 1.4em;
+  margin-bottom:10px
+}
+
+section#social #links {
+  width: 300px;
+  margin: auto;
+}
+
+section#social #links .link {
+  white-space: nowrap;
+}
+
+section#social #links .siberia {
+  position: relative;
+  top: 2px;
+}
+
+section#social #links .siberia svg path {
+  fill: #93a1a1;
+}
+
+section#social #links a {
+  margin: 0 5px;
+  color: #93a1a1;
+  -webkit-transition: all .5s ease 0s;
+  transition: all .5s ease 0s;
+}
+
+section#social #links a svg path {
+  -webkit-transition: fill .5s ease 0s;
+  transition: fill .5s ease 0s;
+  fill: #93a1a1;
+}
+
+section#social #links a:hover{
+  text-decoration: none;
+  color: #444;
+}
+
+section#social #links a:hover svg path{
+  fill: #444;
+}
+
+@media only screen and (min-width: 1024px) {
+
+  section#social #social-header{
+    font-size: 2em;
+  }
+     }
+
+.button {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  border: 2px solid;
+  border-color: white;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 20px;
+  margin-top: 20px;
+  padding: 7px 30px;
+  text-transform: uppercase;
+  -webkit-transition: all .5s ease 0s;
+  transition: all .5s ease 0s;
+  text-align: center
+}
+
+.button:hover{
+  text-decoration: none;
+  background: white;
+  color: #444;
+}
+
+/* you start with transparent type and faux cursor */
+/* each character has typing animation for .5s */
+/* fill mode makes the text keep the color it gets in animation */
+.char1, .char2, .char3, .char4, .char5, .char6, .char7, .char8, .char9, .char10, .char11, .char12, .char13, .char14, .char15, .char16, .char17, .char18 {
+  color: transparent;
+  border-right: .1em solid transparent;
+  -webkit-animation: typing .5s;
+          animation: typing .5s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+.char1 {-webkit-animation-delay: .5s;animation-delay: .5s;}
+.char2 {-webkit-animation-delay: 1s;animation-delay: 1s;}
+.char3 {-webkit-animation-delay: 1.5s;animation-delay: 1.5s;}
+.char4 {-webkit-animation-delay: 2s;animation-delay: 2s;}
+.char5 {-webkit-animation-delay: 2.5s;animation-delay: 2.5s;}
+.char6 {-webkit-animation-delay: 3s;animation-delay: 3s;}
+.char7 {-webkit-animation-delay: 3.5s;animation-delay: 3.5s;}
+.char8 {-webkit-animation-delay: 4s;animation-delay: 4s;}
+.char9 {-webkit-animation-delay: 4.5s;animation-delay: 4.5s;}
+.char10 {-webkit-animation-delay: 5s;animation-delay: 5s;}
+.char11 {-webkit-animation-delay: 5.5s;animation-delay: 5.5s;}
+.char12 {-webkit-animation-delay: 6s;animation-delay: 6s;}
+.char13 {-webkit-animation-delay: 6.5s;animation-delay: 6.5s;}
+.char14 {
+  padding-right: 8px;
+  -webkit-animation: typing 1s;
+          animation: typing 1s;
+  -webkit-animation: blink 1s 3;
+          animation: blink 1s 3;
+  -webkit-animation-delay: 7s;
+          animation-delay: 7s;
+}
+.char15 {-webkit-animation-delay: 10s;animation-delay: 10s;}
+.char16 {-webkit-animation-delay: 10.5s;animation-delay: 10.5s;}
+.char17 {-webkit-animation-delay: 11s;animation-delay: 11s;}
+ /* give your last character some padding and the blink animation */
+.char18 {
+  padding-right: 8px;
+  -webkit-animation: typing 1s;
+          animation: typing 1s;
+  -webkit-animation: blink 1s infinite;
+          animation: blink 1s infinite;
+  -webkit-animation-delay: 11.5s;
+          animation-delay: 11.5s;
+}
+
+.highlight {
+  opacity: 0;
+  -webkit-animation: appear 2s;
+          animation: appear 2s;
+  -webkit-animation-delay: 13s;
+          animation-delay: 13s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes move {
+  from {height: 100vh;}
+    to {height: 50vh;}
+}
+
+@keyframes move {
+  from {height: 100vh;}
+    to {height: 50vh;}
+}
+
+@-webkit-keyframes appear {
+  from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes appear {
+  from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* typing animation */
+@-webkit-keyframes typing {
+  from, to {color: white; border-color: transparent; }
+  70% {color: white; border-color: white; }
+}
+@keyframes typing {
+  from, to {color: white; border-color: transparent; }
+  70% {color: white; border-color: white; }
+}
+
+/* the blinking faux cursor at the end */
+@-webkit-keyframes blink {
+  from, to {color: white; border-color: transparent;}
+  50% {border-color: white;}
+}
+@keyframes blink {
+  from, to {color: white; border-color: transparent;}
+  50% {border-color: white;}
+}
+
+/*# sourceMappingURL=main.css.map */
