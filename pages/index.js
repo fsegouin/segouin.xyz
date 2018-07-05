@@ -3,7 +3,7 @@ import Nav from '../components/nav'
 
 export default () => (
   <div className="root">
-    <Head title="Home" />
+    <Head />
     <Nav />
     <div className="hero">
       <h1 className="title">
