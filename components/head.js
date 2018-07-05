@@ -17,7 +17,10 @@ const Head = props => (
     <link rel="apple-touch-icon" href="/static/touch-icon.png" />
     <link rel="mask-icon" href="/static/favicon-mask.svg" color="#49B882" />
     <link rel="icon" href="/static/favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" as="style" onload="this.rel='stylesheet'"/>
+    <noscript><link rel="style" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" /></noscript> 
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600" as="style" onload="this.rel='stylesheet'" />
+    <noscript><link rel="style" href="https://fonts.googleapis.com/css?family=Work+Sans:400,500,600" /></noscript>
     <meta property="og:url" content={props.url || defaultOGURL} />
     <meta property="og:title" content={props.title || defaultTitle} />
     <meta property="og:type" content={props.type || defaultType} />

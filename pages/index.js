@@ -31,7 +31,6 @@ const Index = () => (
     </div>
 
     <style jsx>{`
-      @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,500,600');
       :global(body) {
         background-color: #1B2B34;
         margin: 0;
