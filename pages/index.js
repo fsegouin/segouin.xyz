@@ -26,7 +26,7 @@ export default () => (
         font-size: 13px;
         font-family: 'Work Sans',-apple-system,BlinkMacSystemFont,Avenir Next,Avenir,Helvetica,sans-serif;
 
-        @media screen and (min-width: 667px) {
+        @media only screen and (min-device-width: 667px) {
           font-size: 18px;
         }
       }
@@ -34,7 +34,20 @@ export default () => (
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        height: 100%;
+
+        @media only screen 
+        and (min-device-width: 320px) 
+        and (max-device-width: 736px)
+        and (-webkit-min-device-pixel-ratio: 2) {
+          min-height: calc(100vh - 75px);
+        }
+
+        @media only screen 
+        and (min-device-width: 375px) 
+        and (max-device-width: 812px) 
+        and (-webkit-min-device-pixel-ratio: 3) { 
+          min-height: calc(100vh - 113px);
+        }
       }
       .hero {
         color: #a1b56c;
@@ -42,11 +55,16 @@ export default () => (
         display: flex;
         align-items: center;
         height: 100%;
-        padding: 0 18%;
+        padding: 0 10%;
         font-size: 1.22vh;
 
-        @media screen and (min-width: 1024px) {
+        @media screen and (min-width: 800px) {
+          font-size: 0.66em;
+        }
+
+        @media only screen and (min-device-width: 1024px) {
           font-size: 1em;
+          padding: 0 18%;
         }
       }
       .title {

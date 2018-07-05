@@ -1,9 +1,11 @@
 import NextHead from 'next/head'
 import { string } from 'prop-types'
 
+const defaultTitle = 'segouin.xyz'
 const defaultDescription = 'Florent Segouin'
 const defaultOGURL = 'https://segouin.xyz'
-const defaultOGImage = ''
+const defaultOGImage = 'https://segouin.xyz/static/thumb.png'
+const defaultType = 'website'
 
 const Head = props => (
   <NextHead>
@@ -17,14 +19,15 @@ const Head = props => (
     <link rel="icon" href="/static/favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
     <meta property="og:url" content={props.url || defaultOGURL} />
-    <meta property="og:title" content={props.title || ''} />
+    <meta property="og:title" content={props.title || defaultTitle} />
+    <meta property="og:type" content={props.title || defaultType} />
     <meta property="og:description" content={props.description || defaultDescription} />
     <meta name="twitter:site" content={props.url || defaultOGURL} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={props.ogImage || defaultOGImage} />
     <meta property="og:image" content={props.ogImage || defaultOGImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="600" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63588331-1"></script>
     <script dangerouslySetInnerHTML={{
       __html:`
