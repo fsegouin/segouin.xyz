@@ -28,15 +28,6 @@ const Head = props => (
     <meta property="og:image" content={props.ogImage || defaultOGImage} />
     <meta property="og:image:width" content="800" />
     <meta property="og:image:height" content="600" />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63588331-1"></script>
-    <script dangerouslySetInnerHTML={{
-      __html:`
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-63588331-1');
-    `}} />
   </NextHead>
 )
 

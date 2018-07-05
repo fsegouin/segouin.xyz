@@ -1,7 +1,20 @@
+import ReactGA from 'react-ga'
 import Head from '../components/head'
 import Nav from '../components/nav'
 
-export default () => (
+const HOC = Component => class extends React.Component {
+  componentDidMount = () => {
+    if (typeof window !== 'undefined') {
+      ReactGA.initialize('UA-63588331-1')
+      ReactGA.pageview('/')
+    }
+  }
+  render() {
+    return <Component {...this.props} />
+  }
+}
+
+const Index = () => (
   <div className="root">
     <Head />
     <Nav />
@@ -58,11 +71,11 @@ export default () => (
         padding: 0 10%;
         font-size: 1.22vh;
 
-        @media screen and (min-width: 800px) {
-          font-size: 0.66em;
+        @media screen and (orientation: landscape) {
+          font-size: 1.66vw;
         }
 
-        @media only screen and (min-device-width: 1024px) {
+        @media screen and (min-width: 1024px) {
           font-size: 1em;
           padding: 0 18%;
         }
@@ -95,3 +108,5 @@ export default () => (
     `}</style>
   </div>
 )
+
+export default HOC(Index)
