@@ -1,111 +1,29 @@
-import ReactGA from 'react-ga'
-import Head from '../components/head'
-import Nav from '../components/nav'
+import Layout from '../components/layout'
+import Title from '../components/h1'
 
-const HOC = Component => class extends React.Component {
-  componentDidMount = () => {
-    if (typeof window !== 'undefined') {
-      ReactGA.initialize('UA-63588331-1')
-      ReactGA.pageview('/')
-    }
-  }
-  render() {
-    return <Component {...this.props} />
-  }
-}
-
-const Index = () => (
-  <div className="root">
-    <Head />
-    <Nav />
-    <div className="hero">
-      <h1 className="title">
-        <span className="bracket">{`{`} </span>
-        Hi, this is <u><a href="mailto:florent+website@segouin.me">Florent</a>!</u> I'm a <s>full-stack</s> developer, <s>hardware</s> hacker, wizard.
-        I like to make your everyday life easier. I break stuff to know how they're made so that I can improve them.
-        I think many things we take for granted can be improved. By thinking outside of the box, we can redefine how we use anything.
-        We are behind what we know is possible today. What prevents us from really going forward is centuries of habits and legacy, and we have the tools to change that.
-        What gets me up in the morning is seeing magic in people's eyes when I show them my work.
-        <span className="bracket"> {`}`}</span>
-      </h1>
-    </div>
-
-    <style jsx>{`
-      :global(body) {
-        background-color: #1B2B34;
-        margin: 0;
-        color: #d8d8d8;
-        font-size: 13px;
-        font-family: 'Work Sans',-apple-system,BlinkMacSystemFont,Avenir Next,Avenir,Helvetica,sans-serif;
-
-        @media only screen and (min-device-width: 667px) {
-          font-size: 18px;
-        }
-      }
-      .root {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-
-        @media only screen 
-        and (min-device-width: 320px) 
-        and (max-device-width: 736px)
-        and (-webkit-min-device-pixel-ratio: 2) {
-          min-height: calc(100vh - 75px);
-        }
-
-        @media only screen 
-        and (min-device-width: 375px) 
-        and (max-device-width: 812px) 
-        and (-webkit-min-device-pixel-ratio: 3) { 
-          min-height: calc(100vh - 113px);
-        }
-      }
-      .hero {
-        color: #a1b56c;
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        height: 100%;
-        padding: 0 10%;
-        font-size: 1.22vh;
-
-        @media screen and (orientation: landscape) {
-          font-size: 1.66vw;
-        }
-
-        @media screen and (min-width: 1024px) {
-          font-size: 1em;
-          padding: 0 18%;
-        }
-      }
-      .title {
-        margin: 0;
-        width: 100%;
-        line-height: 1.33em;
-        font-weight: 500;
-
-        a {
-          color: inherit;
-        }
-
-        .bracket {
-          color: #d8d8d8;
-        }
-
-        &::selection,
-        a::selection,
-        u::selection,
-        s::selection,
-        .bracket::selection {
-          background-color: #f7ca88;
-        }
-      }
-      .title, .description {
-        text-align: center;
-      }
-    `}</style>
-  </div>
+export default () => (
+  <Layout>
+    <Title>Hello World.</Title>
+    <p>
+      Ever thought our lives could be a lot easier? I do. I break stuff all the
+      time to know how they're made in order to improve them. Yes I did break a
+      lot of things but <b>I</b> also learned a lot along the way. I think many
+      things we take for granted can be improved. Remember how long it used to
+      take to get a website on the internet? We can now <b>do</b> this under 10
+      seconds. Why couldn't we do this for everything else?
+    </p>
+    <p>
+      Sometimes it's as easy as thinking outside of the box, and redefining how
+      we use something. Centuries of habits and legacy prevent us from going
+      forward. The good news is, we have the tools to change that. We can use
+      today's technology to make everything we're used to see faster, easier,
+      and cheaper. These principles are behind every single project I've worked
+      on, and I know I achieved my goal the second I can see <b>magic</b> in
+      people's eyes when I show them my work.
+    </p>
+    <p>
+      If you think you need my help for your next project, I might be your guy.
+      Get in touch.
+    </p>
+  </Layout>
 )
-
-export default HOC(Index)
