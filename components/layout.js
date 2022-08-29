@@ -18,7 +18,7 @@ export default ({ children, title = 'segouin.xyz' }) => (
     <main>{children}</main>
 
     <footer>
-      <div className="footer">© Florent Segouin, 2020</div>
+      <div className="footer">© Florent Segouin, 2022</div>
     </footer>
     <style jsx>{
       /* CSS */ `
